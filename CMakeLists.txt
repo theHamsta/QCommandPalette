@@ -4,6 +4,7 @@ project(qcommandpalette)
 set(QT_MIN_VERSION "5.3.0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 find_package( Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets )
 find_package( Qt5LinguistTools )
@@ -16,12 +17,12 @@ include_directories(
     ${Qt5Gui_INCLUDE_DIRS}
     )
     
-aux_source_directory( source ${SOURCES} )
+aux_source_directory( source SOURCES )
 
 file(GLOB UI RELATIVE  "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_CURRENT_SOURCE_DIR}/ui/*.ui )
 file(GLOB UI_INCLUDES RELATIVE  "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp )
 qt5_wrap_cpp(MOC_SRC ${UI_INCLUDES})
-# qt5_wrap_ui(MOC_UI ${UI})
+qt5_wrap_ui(MOC_UI ${UI})
 file(GLOB TRANSLATION_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp )
 file(GLOB TRANSLATION_INCLUDE  ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp )
 # if( CMAKE_BUILD_TYPE STREQUAL "Release" AND Qt5LinguistTools_FOUND)
@@ -35,6 +36,6 @@ add_executable(qcommandpalette
 		${UI}
 		${TRANSLATIONS}
     )
-target_link_libraries(qcommandpalette ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+target_link_libraries(qcommandpalette ${Qt5Widgets_LIBRARIES})
 
 install(TARGETS qcommandpalette RUNTIME DESTINATION bin)

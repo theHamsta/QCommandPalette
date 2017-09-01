@@ -1,11 +1,21 @@
-#include <QtGui/QApplication>
-#include "QCommandPalette.h"
+#include <QApplication>
+#include <QCommandLineParser>
+#include "TestForm.hpp"
 
 
 int main(int argc, char** argv)
 {
-    QApplication app(argc, argv);
-    QCommandPalette qcommandpalette;
-    qcommandpalette.show();
-    return app.exec();
+	QApplication app(argc, argv);
+	
+	QCommandLineParser parser;
+	parser.setApplicationDescription( QCoreApplication::applicationName() );
+	parser.addHelpOption();
+	parser.addVersionOption();
+	parser.addPositionalArgument( "file", QApplication::translate( "main.cpp", "Video file to open" ) );
+	parser.process( app );
+
+	TestForm form;
+	form.show();
+	
+	return app.exec();
 }
