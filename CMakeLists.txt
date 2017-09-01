@@ -34,6 +34,7 @@ add_executable(qcommandpalette
 		${SOURCES}
 		${MOC_SRC}
 		${UI}
+		${UI_INCLUDES}
 		${TRANSLATIONS}
     )
 target_link_libraries(qcommandpalette ${Qt5Widgets_LIBRARIES})
