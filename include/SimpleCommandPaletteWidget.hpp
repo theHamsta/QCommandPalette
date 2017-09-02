@@ -9,7 +9,7 @@ namespace Ui
 class SimpleCommandPaletteWidget;
 }
 
-class QListView;
+class QTableView;
 
 class SimpleCommandPaletteWidget : public AbstractCommandPaletteWidget
 {
@@ -37,7 +37,7 @@ private:
 	void showPopup();
 	
 	Ui::SimpleCommandPaletteWidget* ui;
-	QListView* m_listView = nullptr; ///< Popup-list with suggestions
+	QTableView* m_listView = nullptr; ///< Popup-list with suggestions
 };
 
 #endif // TESTFORM_HPP
