@@ -1,5 +1,5 @@
-#include "TestForm.hpp"
-#include "ui_TestForm.h"
+#include "SimpleCommandPaletteWidget.hpp"
+#include "ui_SimpleCommandPaletteWidget.h"
 
 #include "SimpleCommandPaletteEngine.hpp"
 #include <QDebug>
@@ -7,9 +7,9 @@
 #include <QKeyEvent>
 #include <QListView>
 
-TestForm::TestForm( QWidget* parent ) :
+SimpleCommandPaletteWidget::SimpleCommandPaletteWidget( QWidget* parent ) :
 	AbstractCommandPaletteWidget( new SimpleCommandPaletteEngine(), parent ),
-	ui( new Ui::TestForm )
+	ui( new Ui::SimpleCommandPaletteWidget )
 {
 	ui->setupUi( this );
 
@@ -25,17 +25,17 @@ TestForm::TestForm( QWidget* parent ) :
 	m_listView->hide();
 	m_listView->setEditTriggers( QListView::NoEditTriggers );
 
-	connect( m_listView, &QListView::clicked, this, &TestForm::onListViewClicked );
+	connect( m_listView, &QListView::clicked, this, &SimpleCommandPaletteWidget::onListViewClicked );
 
 }
 
-TestForm::~TestForm()
+SimpleCommandPaletteWidget::~SimpleCommandPaletteWidget()
 {
 	delete m_listView;
 	delete ui;
 }
 
-void TestForm::on_lineEdit_textChanged( QString text )
+void SimpleCommandPaletteWidget::on_lineEdit_textChanged( QString text )
 {
 	if ( text.length() >= 2 ) {
 		m_engine->onSearchRequest( text );
@@ -46,7 +46,7 @@ void TestForm::on_lineEdit_textChanged( QString text )
 	}
 }
 
-void TestForm::onSearchResultsReady( QList<QAction*> results )
+void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 {
 	QStandardItemModel* model = new QStandardItemModel();
 	m_listView->setModel( model );
@@ -74,7 +74,7 @@ void TestForm::onSearchResultsReady( QList<QAction*> results )
 
 }
 
-void TestForm::keyReleaseEvent( QKeyEvent* event )
+void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 {
 	QStandardItemModel* model = reinterpret_cast<QStandardItemModel*>( m_listView->model() );
 
@@ -128,14 +128,14 @@ void TestForm::keyReleaseEvent( QKeyEvent* event )
 }
 
 
-void TestForm::onShortcutPressed()
+void SimpleCommandPaletteWidget::onShortcutPressed()
 {
 	qDebug() << "Shortcut pressed";
 	ui->lineEdit->setFocus();
 }
 
 
-void TestForm::showPopup()
+void SimpleCommandPaletteWidget::showPopup()
 {
 	m_listView->show();
 	QPoint localPos( ui->lineEdit->pos().x(),
@@ -147,7 +147,7 @@ void TestForm::showPopup()
 									100 ) );
 }
 
-void TestForm::onNextSuggestionRequested()
+void SimpleCommandPaletteWidget::onNextSuggestionRequested()
 {
 	qDebug() << "next";
 	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Down, Qt::NoModifier );
@@ -155,7 +155,7 @@ void TestForm::onNextSuggestionRequested()
 	delete event;
 }
 
-void TestForm::onPreviousSuggestionRequested()
+void SimpleCommandPaletteWidget::onPreviousSuggestionRequested()
 {
 	qDebug() << "prev";
 	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Up, Qt::NoModifier );
@@ -165,7 +165,7 @@ void TestForm::onPreviousSuggestionRequested()
 }
 
 
-void TestForm::onListViewClicked( const QModelIndex& index )
+void SimpleCommandPaletteWidget::onListViewClicked( const QModelIndex& index )
 {
 	QStandardItemModel* model = reinterpret_cast<QStandardItemModel*>( m_listView->model() );
 
@@ -184,7 +184,7 @@ void TestForm::onListViewClicked( const QModelIndex& index )
 
 }
 
-void TestForm::setPlaceholderText( QString text )
+void SimpleCommandPaletteWidget::setPlaceholderText( QString text )
 {
 	ui->lineEdit->setPlaceholderText( text );
 }

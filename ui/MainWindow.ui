@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="TestForm" name="widget" native="true"/>
+     <widget class="SimpleCommandPaletteWidget" name="widget" native="true"/>
     </item>
     <item>
      <widget class="QGroupBox" name="groupBox">
@@ -109,9 +109,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TestForm</class>
+   <class>SimpleCommandPaletteWidget</class>
    <extends>QWidget</extends>
-   <header>TestForm.hpp</header>
+   <header>SimpleCommandPaletteWidget.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

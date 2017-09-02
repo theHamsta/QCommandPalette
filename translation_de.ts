@@ -60,15 +60,15 @@
     </message>
 </context>
 <context>
-    <name>TestForm</name>
+    <name>SimpleCommandPaletteWidget</name>
     <message>
-        <location filename="ui/TestForm.ui" line="14"/>
-        <source>Form</source>
+        <location filename="source/SimpleCommandPaletteWidget.cpp" line="16"/>
+        <source>Press &lt;Ctrl+P&gt; to search for possible commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="source/TestForm.cpp" line="16"/>
-        <source>Press &lt;Ctrl+P&gt; to search for possible commands</source>
+        <location filename="ui/SimpleCommandPaletteWidget.ui" line="14"/>
+        <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

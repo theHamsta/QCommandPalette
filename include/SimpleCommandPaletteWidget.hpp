@@ -6,18 +6,18 @@
 
 namespace Ui
 {
-class TestForm;
+class SimpleCommandPaletteWidget;
 }
 
 class QListView;
 
-class TestForm : public AbstractCommandPaletteWidget
+class SimpleCommandPaletteWidget : public AbstractCommandPaletteWidget
 {
 	Q_OBJECT
 
 public:
-	explicit TestForm( QWidget* parent = 0 );
-	~TestForm();
+	explicit SimpleCommandPaletteWidget( QWidget* parent = 0 );
+	~SimpleCommandPaletteWidget();
 
 	void setPlaceholderText( QString text );
 	
@@ -36,7 +36,7 @@ protected:
 private:
 	void showPopup();
 	
-	Ui::TestForm* ui;
+	Ui::SimpleCommandPaletteWidget* ui;
 	QListView* m_listView = nullptr; ///< Popup-list with suggestions
 };
 
