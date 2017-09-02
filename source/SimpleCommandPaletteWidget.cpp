@@ -64,10 +64,6 @@ void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 			commandText = a->text().replace( "&", "" );
 		}
 		
-		if ( !a->shortcut().isEmpty() ) {
-			commandText +=  "      (" + a->shortcut().toString() + ")";
-		}
-
 		QList<QStandardItem*> itemRow;
 		auto item = new QStandardItem( a->icon(), commandText );
 		item->setData( qVariantFromValue( ( void* ) a ) );
