@@ -26,22 +26,16 @@ void TestForm::on_lineEdit_textChanged( QString text )
 		m_engine->onSearchRequest( text );
 	}
 	else {
-		ui->listWidget->clear();
+		ui->listView->setModel( nullptr );
 	}
 }
 
 void TestForm::onSearchResultReady( QList<QAction*> results )
 {
-	ui->listWidget->clear();
-	for ( QAction* a : results ) {
-		ui->listWidget->addItem( a->text().replace("&", "") );
-// 		ui->listWidget->addAction( a);
+	QStandardItemModel* model = new QStandardItemModel();
+	ui->listView->setModel( model );
+	for ( QAction * a : results ) {
+		model->appendRow( new QStandardItem( a->icon(), a->text().replace( "&", "" ) ) );
 	}
-	
-	QStandardItemModel *model = new QStandardItemModel();
-	ui->listView->setModel(model);
-	for ( QAction* a : results ) {
-		model->appendRow(new QStandardItem(a->icon(), a->text().replace("&","")));
-	}
-	
+
 }
