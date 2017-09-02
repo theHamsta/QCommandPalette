@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QKeyEvent>
-#include <QListView>
+#include <QTreeView>
 
 SimpleCommandPaletteWidget::SimpleCommandPaletteWidget( QWidget* parent ) :
 	AbstractCommandPaletteWidget( new SimpleCommandPaletteEngine(), parent ),
@@ -14,18 +14,21 @@ SimpleCommandPaletteWidget::SimpleCommandPaletteWidget( QWidget* parent ) :
 	ui->setupUi( this );
 
 	setPlaceholderText( tr( "Press <Ctrl+P> to search for possible commands" ) );
-	m_listView = new QListView( this );
+	m_listView = new QTreeView( this );
 
 	m_listView->setSelectionBehavior( QAbstractItemView::SelectItems );
-	m_listView->setSelectionMode( QAbstractItemView::SingleSelection );
 // 	m_listView->setWindowFlags( Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint );
 	m_listView->setWindowFlags( Qt::ToolTip );
-// 	m_listView->setAttribute( Qt::WA_ShowWithoutActivating );
-	m_listView->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
+	m_listView->setSelectionBehavior( QAbstractItemView::SelectRows);
+// 	m_listView->verticalHeader()->setVisible(false);
+// 	m_listView->horizontalHeader()->setVisible(false);
+// 	m_listView->setShowGrid(false);
+	m_listView->header()->close();
+	m_listView->setRootIsDecorated(false);
 	m_listView->hide();
-	m_listView->setEditTriggers( QListView::NoEditTriggers );
+	m_listView->setEditTriggers( QTreeView::NoEditTriggers );
 
-	connect( m_listView, &QListView::clicked, this, &SimpleCommandPaletteWidget::onListViewClicked );
+	connect( m_listView, &QTreeView::clicked, this, &SimpleCommandPaletteWidget::onListViewClicked );
 
 }
 
@@ -65,9 +68,18 @@ void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 			commandText +=  "      (" + a->shortcut().toString() + ")";
 		}
 
+		QList<QStandardItem*> itemRow;
 		auto item = new QStandardItem( a->icon(), commandText );
 		item->setData( qVariantFromValue( ( void* ) a ) );
-		model->appendRow( item );
+		itemRow.append(item);
+		
+		if ( !a->shortcut().isEmpty() ) {
+			 QStandardItem* shortcutItem = new QStandardItem( "(" + a->shortcut().toString() + ")");
+			 shortcutItem->setForeground(Qt::gray);
+			 shortcutItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter );
+			 itemRow.append(shortcutItem);
+		}
+		model->appendRow( itemRow );
 	}
 
 	if ( !results.empty() ) {
@@ -92,7 +104,7 @@ void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 		QAction* selectedCommand = nullptr;
 
 
-		if ( selectedIndexes.length() == 1 ) {
+		if ( selectedIndexes.length() > 0 ) {
 			selectedIndex = &selectedIndexes[0];
 			selectedItem =  model->itemFromIndex( selectedIndexes[0] );
 			selectedCommand = ( QAction* ) selectedItem->data().value<void*>();
@@ -151,6 +163,8 @@ void SimpleCommandPaletteWidget::showPopup()
 									globalPos.y(),
 									ui->lineEdit->width(),
 									200 ) );
+	m_listView->setColumnWidth( 0, ui->lineEdit->width() * 0.7 );
+	m_listView->setColumnWidth( 1, ui->lineEdit->width() * 0.2 );
 }
 
 void SimpleCommandPaletteWidget::onNextSuggestionRequested()
@@ -167,7 +181,6 @@ void SimpleCommandPaletteWidget::onPreviousSuggestionRequested()
 	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Up, Qt::NoModifier );
 	keyPressEvent( event );
 	delete event;
-
 }
 
 
