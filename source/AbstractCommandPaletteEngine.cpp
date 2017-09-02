@@ -12,7 +12,6 @@ void AbstractCommandPaletteEngine::addAction(QAction* action)
 
 void AbstractCommandPaletteEngine::addActions(QList< QAction* >& actions )
 {
-	assert( false );
 	m_actions.append(actions);
 }
 
