@@ -13,8 +13,8 @@
 
 class SimpleCommandPaletteEngine: public AbstractCommandPaletteEngine
 {
-public:
 	Q_OBJECT
+public:
 	SimpleCommandPaletteEngine();
 	virtual ~SimpleCommandPaletteEngine();
 

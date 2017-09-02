@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QCommandLineParser>
-#include "TestForm.hpp"
+#include "MainWindow.hpp"
 
 
 int main(int argc, char** argv)
@@ -11,10 +11,10 @@ int main(int argc, char** argv)
 	parser.setApplicationDescription( QCoreApplication::applicationName() );
 	parser.addHelpOption();
 	parser.addVersionOption();
-	parser.addPositionalArgument( "file", QApplication::translate( "main.cpp", "Video file to open" ) );
+// 	parser.addPositionalArgument( "file", QApplication::translate( "main.cpp", "Video file to open" ) );
 	parser.process( app );
 
-	TestForm form;
+	MainWindow form;
 	form.show();
 	
 	return app.exec();

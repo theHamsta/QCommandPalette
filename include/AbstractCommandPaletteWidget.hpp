@@ -22,7 +22,7 @@ public:
 	virtual ~AbstractCommandPaletteWidget() { if(m_engine) delete m_engine; }
 
 	inline void setCommandPaletteEngine( AbstractCommandPaletteEngine* engine ) { m_engine = engine; }
-	inline const AbstractCommandPaletteEngine* getCommandPaletteEngine() { return m_engine; }
+	inline AbstractCommandPaletteEngine* commandPaletteEngine() const { return m_engine; }
 	
 // 	virtual QWidget* textWidget() = 0;
 

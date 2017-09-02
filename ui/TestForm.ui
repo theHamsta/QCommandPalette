@@ -20,6 +20,9 @@
    <item>
     <widget class="QListWidget" name="listWidget"/>
    </item>
+   <item>
+    <widget class="QListView" name="listView"/>
+   </item>
   </layout>
  </widget>
  <resources/>
