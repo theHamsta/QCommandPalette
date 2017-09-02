@@ -17,6 +17,8 @@ class SimpleCommandPaletteEngine: public AbstractCommandPaletteEngine
 public:
 	SimpleCommandPaletteEngine();
 	virtual ~SimpleCommandPaletteEngine();
+	
+	
 
 public slots:
 	virtual void onSearchRequest( const QString& searchQuery ) override;
