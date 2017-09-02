@@ -7,7 +7,6 @@
 
 void AbstractCommandPaletteEngine::addAction(QAction* action)
 {
-	qDebug() << "Adding action" << action->text();
 	m_actions.append(action);
 }
 
@@ -20,7 +19,6 @@ void AbstractCommandPaletteEngine::addActions(QList< QAction* >& actions )
 
 void AbstractCommandPaletteEngine::addActionsFromMenu(const QMenu* menu)
 {
-	qDebug() << "Adding menu" << menu->title();
 	foreach (QAction *action, menu->actions()) {
 		if (action->isSeparator()) {
 		} else if (action->menu()) {
@@ -33,7 +31,6 @@ void AbstractCommandPaletteEngine::addActionsFromMenu(const QMenu* menu)
 
 void AbstractCommandPaletteEngine::addActionsFromMenu(const QMenuBar* menubar )
 {
-	qDebug() << "Adding menubar";
 	foreach (QAction *action, menubar->actions()) {
 		if (action->isSeparator()) {
 			// pass
