@@ -9,47 +9,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/MainWindow.ui" line="35"/>
-        <source>Fi&amp;le</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/MainWindow.ui" line="39"/>
-        <source>&amp;ups</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/MainWindow.ui" line="59"/>
-        <source>&amp;huhu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/MainWindow.ui" line="67"/>
-        <source>&amp;Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/MainWindow.ui" line="75"/>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/MainWindow.ui" line="80"/>
-        <source>&amp;Fancy Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/MainWindow.ui" line="88"/>
-        <source>&amp;Quit</source>
+        <location filename="ui/MainWindow.ui" line="24"/>
+        <source>GroupBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/MainWindow.ui" line="50"/>
+        <source>Fi&amp;le</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="54"/>
+        <source>&amp;ups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="74"/>
+        <source>&amp;huhu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="82"/>
+        <source>&amp;Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="90"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="95"/>
+        <source>&amp;Fancy Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="103"/>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/MainWindow.ui" line="65"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/MainWindow.ui" line="91"/>
+        <location filename="ui/MainWindow.ui" line="106"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
@@ -59,6 +64,11 @@
     <message>
         <location filename="ui/TestForm.ui" line="14"/>
         <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="source/TestForm.cpp" line="16"/>
+        <source>Press &lt;Ctrl+P&gt; to search for possible commands</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

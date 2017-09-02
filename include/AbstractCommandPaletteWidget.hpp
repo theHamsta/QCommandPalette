@@ -9,30 +9,40 @@
 #ifndef ABSTRACTCOMMANDPALETTEWIDGET_HPP
 #define ABSTRACTCOMMANDPALETTEWIDGET_HPP
 
-#include <QWidget>
 #include "AbstractCommandPaletteEngine.hpp"
 
+#include <QWidget>
+#include <QShortcut>
+#include <QAction>
 
-class QAction;
+
 
 class AbstractCommandPaletteWidget: public QWidget
 {
 	Q_OBJECT
 public:
-	virtual ~AbstractCommandPaletteWidget() { if(m_engine) delete m_engine; }
+	virtual ~AbstractCommandPaletteWidget();
 
-	inline void setCommandPaletteEngine( AbstractCommandPaletteEngine* engine ) { m_engine = engine; }
+	void setCommandPaletteEngine( AbstractCommandPaletteEngine* engine );
 	inline AbstractCommandPaletteEngine* commandPaletteEngine() const { return m_engine; }
-	
-// 	virtual QWidget* textWidget() = 0;
+// 	void setShortcut( QString keySequence );
 
-	
+protected slots:
+	virtual void onSearchResultsReady( QList<QAction*> results ) = 0;
+	virtual void onShortcutPressed() = 0;
+	virtual void onNextSuggestionRequested() = 0;
+	virtual void onPreviousSuggestionRequested() = 0;
+
 protected:
-	explicit AbstractCommandPaletteWidget(QWidget* parent = nullptr ) : QWidget(parent) { }
-	virtual void keyReleaseEvent( QKeyEvent* event) override;
-	
-	AbstractCommandPaletteEngine* m_engine = nullptr; ///< Engine to find suggestions
+	explicit AbstractCommandPaletteWidget( AbstractCommandPaletteEngine* engine, QWidget* parent = nullptr );
+	virtual void keyReleaseEvent( QKeyEvent* event ) override;
 
+	AbstractCommandPaletteEngine* m_engine = nullptr; ///< Engine to find suggestions
+private:
+	QShortcut* m_shortcut = nullptr; ///< Shortcut to activate widget
+	QShortcut* m_shortcutNextSuggestion = nullptr; ///< Shortcut to select next suggestion
+	QShortcut* m_shortcutPreviousSuggestion = nullptr; ///< Shortcut to select previous suggestion
 };
 
 #endif // ABSTRACTCOMMANDPALETTEWIDGET_HPP
+
