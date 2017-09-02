@@ -17,7 +17,6 @@ SimpleCommandPaletteEngine::~SimpleCommandPaletteEngine()
 
 void SimpleCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 {
-	qDebug() << "Recieved search request:" << searchQuery;
 	QList<QAction*> results;
 
 	for ( QAction * a : m_actions ) {

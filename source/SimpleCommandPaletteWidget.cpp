@@ -130,7 +130,6 @@ void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 
 void SimpleCommandPaletteWidget::onShortcutPressed()
 {
-	qDebug() << "Shortcut pressed";
 	ui->lineEdit->setFocus();
 }
 
