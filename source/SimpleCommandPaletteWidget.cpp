@@ -95,8 +95,8 @@ void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 		if ( ( event->key() ==  Qt::Key_Enter ) || ( event->key() == Qt::Key_Return ) ) {
 
 			if ( selectedCommand ) {
-				selectedCommand->trigger();
 				ui->lineEdit->clear();
+				selectedCommand->trigger();
 			}
 
 		}
@@ -173,11 +173,11 @@ void SimpleCommandPaletteWidget::onListViewClicked( const QModelIndex& index )
 		QAction* action = reinterpret_cast<QAction*>( item->data().value<void*>() );
 
 		if ( action ) {
-			action->trigger();
 			m_listView->hide();
 			ui->lineEdit->blockSignals( true );
 			ui->lineEdit->clear();
 			ui->lineEdit->blockSignals( false );
+			action->trigger();
 		}
 	}
 
