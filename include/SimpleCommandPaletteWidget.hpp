@@ -32,6 +32,7 @@ private slots:
 
 protected:
 	virtual void keyReleaseEvent( QKeyEvent* event ) override;
+	virtual void focusInEvent( QFocusEvent* event ) override;
 
 private:
 	void showPopup();

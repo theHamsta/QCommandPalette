@@ -25,12 +25,16 @@ public:
 
 	void setCommandPaletteEngine( AbstractCommandPaletteEngine* engine );
 	inline AbstractCommandPaletteEngine* commandPaletteEngine() const { return m_engine; }
-// 	void setShortcut( QString keySequence );
+	void setShortcut( QString keySequence );
+	void removeShortcut();
 
 	virtual void addAction( QAction* action ) { m_engine->addAction( action ); }
 	virtual void addActions( QList<QAction*>& actions ) { m_engine->addActions( actions ); }
 	void addActionsFromMenu( const QMenuBar* menubar ) { m_engine->addActionsFromMenu( menubar ); }
 	void addActionsFromMenu( const QMenu* menu ) { m_engine->addActionsFromMenu( menu ); }
+	
+signals:
+	void userInteractionFinished();
 
 protected slots:
 	virtual void onSearchResultsReady( QList<QAction*> results ) = 0;

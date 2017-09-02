@@ -91,6 +91,11 @@ void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 
 void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 {
+	if ( event->key() == Qt::Key_Escape ) {
+			emit userInteractionFinished();
+			ui->lineEdit->clear();
+	}
+	
 	QStandardItemModel* model = reinterpret_cast<QStandardItemModel*>( m_listView->model() );
 
 	if ( model && m_listView->selectionModel() ) {
@@ -110,13 +115,11 @@ void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 		if ( ( event->key() ==  Qt::Key_Enter ) || ( event->key() == Qt::Key_Return ) ) {
 
 			if ( selectedCommand ) {
+				emit userInteractionFinished();
 				ui->lineEdit->clear();
 				selectedCommand->trigger();
 			}
 
-		}
-		else if ( event->key() == Qt::Key_Escape ) {
-			ui->lineEdit->clear();
 		}
 		else if ( event->key() == Qt::Key_Down ) {
 
@@ -189,6 +192,7 @@ void SimpleCommandPaletteWidget::onListViewClicked( const QModelIndex& index )
 		QAction* action = reinterpret_cast<QAction*>( item->data().value<void*>() );
 
 		if ( action ) {
+			emit userInteractionFinished();
 			m_listView->hide();
 			ui->lineEdit->blockSignals( true );
 			ui->lineEdit->clear();
@@ -204,3 +208,9 @@ void SimpleCommandPaletteWidget::setPlaceholderText( QString text )
 	ui->lineEdit->setPlaceholderText( text );
 }
 
+
+void SimpleCommandPaletteWidget::focusInEvent( QFocusEvent* event )
+{
+	event->accept();
+	ui->lineEdit->setFocus();
+}
