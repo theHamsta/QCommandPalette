@@ -52,10 +52,17 @@ void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 	m_listView->setModel( model );
 
 	for ( QAction * a : results ) {
-		QString commandText = a->text().replace( "&", "" );
+		QString commandText;
 
+		if( a->isCheckable() && !a->actionGroup() ) {
+			commandText = (a->isChecked() ? tr("Deactivate \"") : tr("Activate \"")) +  a->text().replace( "&", "" ) + "\"";
+		}
+		else {
+			commandText = a->text().replace( "&", "" );
+		}
+		
 		if ( !a->shortcut().isEmpty() ) {
-			commandText +=  "\t(" + a->shortcut().toString() + ")";
+			commandText +=  "      (" + a->shortcut().toString() + ")";
 		}
 
 		auto item = new QStandardItem( a->icon(), commandText );
@@ -143,7 +150,7 @@ void SimpleCommandPaletteWidget::showPopup()
 	m_listView->setGeometry( QRect( globalPos.x(),
 									globalPos.y(),
 									ui->lineEdit->width(),
-									100 ) );
+									200 ) );
 }
 
 void SimpleCommandPaletteWidget::onNextSuggestionRequested()
