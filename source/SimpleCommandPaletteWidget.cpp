@@ -94,6 +94,7 @@ void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 
 void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 {
+	QWidget::keyPressEvent(event);
 	if ( event->key() == Qt::Key_Escape ) {
 			emit userInteractionFinished();
 			ui->lineEdit->clear();
@@ -214,6 +215,8 @@ void SimpleCommandPaletteWidget::setPlaceholderText( QString text )
 
 void SimpleCommandPaletteWidget::focusInEvent( QFocusEvent* event )
 {
+	QWidget::focusInEvent(event);
 	event->accept();
 	ui->lineEdit->setFocus();
 }
+
