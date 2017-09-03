@@ -2,8 +2,11 @@
 
 #include <QMenuBar>
 #include <QDebug>
+#include <QAction>
 
 #include "assert.h"
+
+
 
 void AbstractCommandPaletteEngine::addAction(QAction* action)
 {
@@ -42,6 +45,29 @@ void AbstractCommandPaletteEngine::addActionsFromMenu(const QMenuBar* menubar )
 		}
 	}
 }
+
+void AbstractCommandPaletteEngine::clearActions()
+{
+	m_actions.clear();
+}
+
+void AbstractCommandPaletteEngine::clearDynamicActions()
+{
+	m_dynamicActions.clear();
+}
+
+void AbstractCommandPaletteEngine::addFunctionForDynamicActions(const std::function< QList< QAction* >(QString) > function)
+{
+	m_dynamicActions.append(function);
+}
+
+AbstractCommandPaletteEngine::~AbstractCommandPaletteEngine()
+{
+	for( QAction* a : m_temporalActions ) {
+		delete a;
+	}
+}
+
 
 
 

@@ -18,6 +18,12 @@ SimpleCommandPaletteEngine::~SimpleCommandPaletteEngine()
 
 void SimpleCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 {
+	// Delete dynamically generated from last search
+	for( QAction* a : m_temporalActions ) {
+		delete a;
+	}
+	m_temporalActions.clear();
+	
 	QList<QAction*> results;
 	QStringList words = searchQuery.toLower().split( " ", QString::SkipEmptyParts );
 
@@ -63,6 +69,11 @@ void SimpleCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 			}
 		}
 	}
+	
+	for( auto f : m_dynamicActions ) {
+		m_temporalActions.append(f(searchQuery));
+	}
+	results.append(m_temporalActions);
 	
 	for ( QAction* a : m_actions ) {
 		a->setData(false);

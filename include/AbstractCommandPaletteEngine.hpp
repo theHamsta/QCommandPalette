@@ -11,6 +11,7 @@
 
 #include <QList>
 #include <QWidget>
+#include <functional>
 
 class QAction;
 class QMenu;
@@ -22,12 +23,15 @@ class AbstractCommandPaletteEngine: public QObject
 {
 	Q_OBJECT
 public:
-	virtual ~AbstractCommandPaletteEngine() {}
+	virtual ~AbstractCommandPaletteEngine(); 
 	
 	virtual void addAction( QAction* action);
 	virtual void addActions( QList<QAction*>& actions);
 	void addActionsFromMenu( const QMenuBar* menubar);
 	void addActionsFromMenu( const QMenu* menu);
+	void addFunctionForDynamicActions( const std::function<QList<QAction*>(QString searchQuery)> function );
+	void clearActions();
+	void clearDynamicActions();
 
 signals:
 	void actionsFound( QList<QAction*> actions );
@@ -37,7 +41,9 @@ public slots:
 
 protected:
 	QList<QAction*> m_actions; ///< List of available commands
+	QList<QAction*> m_temporalActions; ///< List of dynamically generated commands (will be deleted after each user interaction)
 	QList<QMenu*> m_menus; ///< List of menus (used as categories of commands)
+	QList<std::function<QList<QAction*>(QString searchQuery)>> m_dynamicActions; ///< Functions to generate dynamic commands
 	AbstractCommandPaletteEngine() {};
 };
 
