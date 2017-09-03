@@ -22,6 +22,7 @@ void AbstractCommandPaletteEngine::addActionsFromMenu(const QMenu* menu)
 		if (action->isSeparator()) {
 		} else if (action->menu()) {
 			addActionsFromMenu(action->menu());
+			m_menus.append(action->menu());
 		} else {
 			addAction( action );
 		}
@@ -35,6 +36,7 @@ void AbstractCommandPaletteEngine::addActionsFromMenu(const QMenuBar* menubar )
 			// pass
 		} else if (action->menu()) {
 			addActionsFromMenu(action->menu());
+			m_menus.append(action->menu());
 		} else {
 			addAction( action );
 		}

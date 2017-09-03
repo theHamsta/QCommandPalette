@@ -60,6 +60,9 @@ void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
 		if( a->isCheckable() && !a->actionGroup() ) {
 			commandText = (a->isChecked() ? tr("Deactivate \"") : tr("Activate \"")) +  a->text().replace( "&", "" ) + "\"";
 		}
+		else if ( a->isCheckable() && a->actionGroup() ) {
+			commandText = tr("Select: ") + a->text().replace( "&", "" );
+		}
 		else {
 			commandText = a->text().replace( "&", "" );
 		}
@@ -166,21 +169,21 @@ void SimpleCommandPaletteWidget::showPopup()
 	m_listView->setColumnWidth( 1, ui->lineEdit->width() * 0.2 );
 }
 
-void SimpleCommandPaletteWidget::onNextSuggestionRequested()
-{
-	qDebug() << "next";
-	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Down, Qt::NoModifier );
-	keyPressEvent( event );
-	delete event;
-}
-
-void SimpleCommandPaletteWidget::onPreviousSuggestionRequested()
-{
-	qDebug() << "prev";
-	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Up, Qt::NoModifier );
-	keyPressEvent( event );
-	delete event;
-}
+// void SimpleCommandPaletteWidget::onNextSuggestionRequested()
+// {
+// 	qDebug() << "next";
+// 	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Down, Qt::NoModifier );
+// 	keyPressEvent( event );
+// 	delete event;
+// }
+// 
+// void SimpleCommandPaletteWidget::onPreviousSuggestionRequested()
+// {
+// 	qDebug() << "prev";
+// 	auto event = new QKeyEvent( QEvent::KeyRelease, Qt::Key_Up, Qt::NoModifier );
+// 	keyPressEvent( event );
+// 	delete event;
+// }
 
 
 void SimpleCommandPaletteWidget::onListViewClicked( const QModelIndex& index )

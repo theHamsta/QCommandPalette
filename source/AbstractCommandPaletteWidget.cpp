@@ -6,13 +6,13 @@ AbstractCommandPaletteWidget::AbstractCommandPaletteWidget( AbstractCommandPalet
 {
 	setCommandPaletteEngine( engine );
 	m_shortcut = new QShortcut( QKeySequence( "Ctrl+P" ), this );
-	m_shortcutNextSuggestion = new QShortcut( QKeySequence( "Ctrl+N" ), this );
-	m_shortcutPreviousSuggestion = new QShortcut( QKeySequence( "Ctrl+X" ), this );
+// 	m_shortcutNextSuggestion = new QShortcut( QKeySequence( "Ctrl+N" ), this );
+// 	m_shortcutPreviousSuggestion = new QShortcut( QKeySequence( "Ctrl+X" ), this );
 
 	connect( m_shortcut, &QShortcut::activated, this, &AbstractCommandPaletteWidget::onShortcutPressed );
 	connect( m_engine, &AbstractCommandPaletteEngine::actionsFound, this, &AbstractCommandPaletteWidget::onSearchResultsReady );
-	connect( m_shortcutNextSuggestion, &QShortcut::activated, this, &AbstractCommandPaletteWidget::onNextSuggestionRequested );
-	connect( m_shortcutPreviousSuggestion, &QShortcut::activated, this, &AbstractCommandPaletteWidget::onPreviousSuggestionRequested );
+// 	connect( m_shortcutNextSuggestion, &QShortcut::activated, this, &AbstractCommandPaletteWidget::onNextSuggestionRequested );
+// 	connect( m_shortcutPreviousSuggestion, &QShortcut::activated, this, &AbstractCommandPaletteWidget::onPreviousSuggestionRequested );
 }
 
 AbstractCommandPaletteWidget::~AbstractCommandPaletteWidget()
@@ -21,9 +21,9 @@ AbstractCommandPaletteWidget::~AbstractCommandPaletteWidget()
 
 	if ( m_shortcut ) delete m_shortcut;
 
-	if ( m_shortcutNextSuggestion ) delete m_shortcutNextSuggestion;
-
-	if ( m_shortcutPreviousSuggestion ) delete m_shortcutPreviousSuggestion;
+// 	if ( m_shortcutNextSuggestion ) delete m_shortcutNextSuggestion;
+// 
+// 	if ( m_shortcutPreviousSuggestion ) delete m_shortcutPreviousSuggestion;
 
 
 }

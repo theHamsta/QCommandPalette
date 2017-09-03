@@ -39,8 +39,8 @@ signals:
 protected slots:
 	virtual void onSearchResultsReady( QList<QAction*> results ) = 0;
 	virtual void onShortcutPressed() = 0;
-	virtual void onNextSuggestionRequested() = 0;
-	virtual void onPreviousSuggestionRequested() = 0;
+// 	virtual void onNextSuggestionRequested() = 0;
+// 	virtual void onPreviousSuggestionRequested() = 0;
 
 protected:
 	explicit AbstractCommandPaletteWidget( AbstractCommandPaletteEngine* engine, QWidget* parent = nullptr );
@@ -49,8 +49,8 @@ protected:
 	AbstractCommandPaletteEngine* m_engine = nullptr; ///< Engine to find suggestions
 private:
 	QShortcut* m_shortcut = nullptr; ///< Shortcut to activate widget
-	QShortcut* m_shortcutNextSuggestion = nullptr; ///< Shortcut to select next suggestion
-	QShortcut* m_shortcutPreviousSuggestion = nullptr; ///< Shortcut to select previous suggestion
+// 	QShortcut* m_shortcutNextSuggestion = nullptr; ///< Shortcut to select next suggestion
+// 	QShortcut* m_shortcutPreviousSuggestion = nullptr; ///< Shortcut to select previous suggestion
 };
 
 #endif // ABSTRACTCOMMANDPALETTEWIDGET_HPP

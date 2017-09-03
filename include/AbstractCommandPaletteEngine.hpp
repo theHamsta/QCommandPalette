@@ -37,7 +37,8 @@ public slots:
 
 protected:
 	QList<QAction*> m_actions; ///< List of available commands
+	QList<QMenu*> m_menus; ///< List of menus (used as categories of commands)
 	AbstractCommandPaletteEngine() {};
 };
 
-#endif /* end of include guard:  ABSTRACTCOMMANDPALETTEENGINE_HPP */
+#endif

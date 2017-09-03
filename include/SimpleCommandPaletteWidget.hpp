@@ -26,8 +26,8 @@ private slots:
 	void onSearchResultsReady( QList<QAction*> results ) override;
 	void onShortcutPressed() override;
 	void onListViewClicked( const QModelIndex& index );
-	void onNextSuggestionRequested() override;
-	void onPreviousSuggestionRequested() override;
+// 	void onNextSuggestionRequested() override;
+// 	void onPreviousSuggestionRequested() override;
 
 
 protected:
