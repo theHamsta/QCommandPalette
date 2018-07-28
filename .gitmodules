@@ -1,0 +1,3 @@
+[submodule "fuzzy-native"]
+	path = fuzzy-native
+	url = https://github.com/hansonw/fuzzy-native.git
