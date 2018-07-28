@@ -58,6 +58,11 @@ void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 
 	QList<QAction*> results;
 
+	for ( auto f : m_dynamicActions ) {
+		m_temporalActions.append( f( searchQuery ) );
+	}
+
+	results.append( m_temporalActions );
 
 	std::vector<MatchResult> resultsStaticActions =  m_matcherBase.findMatches( searchQuery.toStdString(), m_matcherOptions );
 
@@ -73,11 +78,6 @@ void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 		}
 	}
 
-	for ( auto f : m_dynamicActions ) {
-		m_temporalActions.append( f( searchQuery ) );
-	}
-
-	results.append( m_temporalActions );
 
 
 	emit actionsFound( results );
