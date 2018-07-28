@@ -18,7 +18,7 @@ class FuzzyCommandPaletteEngine : public AbstractCommandPaletteEngine
 		virtual void addActions( QList<QAction*>& actions ) override;
 		virtual void clearActions() override;
 		inline void setMatcherOptions( const MatcherOptions& options ) {m_matcherOptions = options; }
-		inline void matcherOptions() const {return m_matcherOptions;}
+		inline MatcherOptions matcherOptions() const {return m_matcherOptions;}
 
 	public slots:
 		virtual void onSearchRequest( const QString& searchQuery ) override;
