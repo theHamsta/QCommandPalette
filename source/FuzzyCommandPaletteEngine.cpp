@@ -60,8 +60,6 @@ void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 
 
 	std::vector<MatchResult> resultsStaticActions =  m_matcherBase.findMatches( searchQuery.toStdString(), m_matcherOptions );
-	std::cout << "Found " << resultsStaticActions.size() << std::endl;
-
 
 	for ( auto& r : resultsStaticActions ) {
 		auto find = m_stringToActionMap.find( *r.value );
