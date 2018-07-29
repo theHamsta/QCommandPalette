@@ -26,7 +26,7 @@ class FuzzyCommandPaletteEngine : public AbstractCommandPaletteEngine
 
 	private:
 		MatcherBase m_matcherBase; ///< String matcher for fuzzy search
-		MatcherOptions m_matcherOptions{false, 3, 10, 0, false}; ///< Options for string matcher
+		MatcherOptions m_matcherOptions; ///< Options for string matcher
 		std::map<std::string, QAction*> m_stringToActionMap; ///< Map search results to corresponding QActions
 
 };

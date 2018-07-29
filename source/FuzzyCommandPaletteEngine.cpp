@@ -9,7 +9,10 @@
 void FuzzyCommandPaletteEngine::addAction( QAction* action )
 {
 	AbstractCommandPaletteEngine::addAction( action );
-
+	m_matcherOptions.case_sensitive = false;
+	m_matcherOptions.num_threads = 3;
+	m_matcherOptions.max_results = 10;
+	m_matcherOptions.max_gap = 0;
 	QString searchString = action->text().toLower();
 	QMenu* parentMenu = dynamic_cast<QMenu*>( action->parent() );
 
