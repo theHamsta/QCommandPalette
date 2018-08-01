@@ -52,20 +52,6 @@ void FuzzyCommandPaletteEngine::clearActions()
 
 void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 {
-	// Delete dynamically generated from last search
-	for ( QAction* a : m_temporalActions ) {
-		delete a;
-	}
-
-	m_temporalActions.clear();
-
-	QList<QAction*> results;
-
-	for ( auto f : m_dynamicActions ) {
-		m_temporalActions.append( f( searchQuery ) );
-	}
-
-	results.append( m_temporalActions );
 
 	std::vector<MatchResult> resultsStaticActions =  m_matcherBase.findMatches( searchQuery.toStdString(), m_matcherOptions );
 
@@ -80,6 +66,21 @@ void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 			}
 		}
 	}
+
+	// Delete dynamically generated from last search
+	for ( QAction* a : m_temporalActions ) {
+		delete a;
+	}
+
+	m_temporalActions.clear();
+
+	QList<QAction*> results;
+
+	for ( auto f : m_dynamicActions ) {
+		m_temporalActions.append( f( searchQuery ) );
+	}
+
+	results.append( m_temporalActions );
 
 
 
