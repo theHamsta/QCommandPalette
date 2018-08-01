@@ -17,8 +17,9 @@ void FuzzyCommandPaletteEngine::addAction( QAction* action )
 	QMenu* parentMenu = dynamic_cast<QMenu*>( action->parent() );
 
 	if ( parentMenu ) {
-		searchString += parentMenu->title().toLower().replace( "&", "" );
+		searchString = parentMenu->title().toLower().replace( "&", "" ) + " "+ searchString;
 	}
+	searchString += " " + action->shortcut().toString() + " " + action->toolTip();
 
 	m_matcherBase.addCandidate( searchString.toStdString() );
 	m_stringToActionMap[ searchString.toStdString()] = action ;
