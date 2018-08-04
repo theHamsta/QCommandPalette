@@ -10,7 +10,6 @@ namespace Ui
 }
 
 class QTreeView;
-
 class SimpleCommandPaletteWidget : public AbstractCommandPaletteWidget
 {
 		Q_OBJECT
@@ -20,6 +19,7 @@ class SimpleCommandPaletteWidget : public AbstractCommandPaletteWidget
 		~SimpleCommandPaletteWidget();
 
 		inline qreal minimumPopUpWidth() const { return m_minPopUpWidth; }
+		QString placeholderText();
 
 		void setPlaceholderText( QString text );
 		inline void setMinimumPopUpWidth( int width ) { m_minPopUpWidth = width; }

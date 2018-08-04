@@ -36,10 +36,8 @@ void AbstractCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
 
 void AbstractCommandPaletteWidget::setShortcut( QString keySequence )
 {
-	if ( m_shortcut ) {
-		delete m_shortcut;
-		m_shortcut = nullptr;
-	}
+	delete m_shortcut;
+	m_shortcut = nullptr;
 
 	if ( !keySequence.isEmpty() ) {
 		m_shortcut = new QShortcut( QKeySequence( keySequence ), this );

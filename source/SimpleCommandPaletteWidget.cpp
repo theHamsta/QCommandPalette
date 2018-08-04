@@ -208,6 +208,10 @@ void SimpleCommandPaletteWidget::setPlaceholderText( QString text )
 	ui->lineEdit->setPlaceholderText( text );
 }
 
+QString SimpleCommandPaletteWidget::placeholderText()
+{
+	return ui->lineEdit->placeholderText();
+}
 
 void SimpleCommandPaletteWidget::focusInEvent( QFocusEvent* event )
 {
