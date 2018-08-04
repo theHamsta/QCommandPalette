@@ -162,8 +162,8 @@ void SimpleCommandPaletteWidget::showPopup()
 									globalPos.y(),
 									std::max( ui->lineEdit->width(), m_minPopUpWidth ),
 									200 ) );
-	m_listView->setColumnWidth( 0, ui->lineEdit->width() * 0.7 );
-	m_listView->setColumnWidth( 1, ui->lineEdit->width() * 0.2 );
+	m_listView->setColumnWidth( 0, std::max( ui->lineEdit->width(), m_minPopUpWidth ) * 0.7 );
+	m_listView->setColumnWidth( 1, std::max( ui->lineEdit->width(), m_minPopUpWidth ) * 0.2 );
 }
 
 // void SimpleCommandPaletteWidget::onNextSuggestionRequested()
