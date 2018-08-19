@@ -17,8 +17,9 @@ void FuzzyCommandPaletteEngine::addAction( QAction* action )
 	QMenu* parentMenu = dynamic_cast<QMenu*>( action->parent() );
 
 	if ( parentMenu ) {
-		searchString = parentMenu->title().toLower().replace( "&", "" ) + " "+ searchString;
+		searchString = parentMenu->title().toLower().replace( "&", "" ) + " " + searchString;
 	}
+
 	searchString += " " + action->shortcut().toString() + " " + action->toolTip();
 
 	m_matcherBase.addCandidate( searchString.toStdString() );
@@ -57,18 +58,6 @@ void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 	QList<QAction*> results;
 	std::vector<MatchResult> resultsStaticActions =  m_matcherBase.findMatches( searchQuery.toStdString(), m_matcherOptions );
 
-	for ( auto& r : resultsStaticActions ) {
-		auto find = m_stringToActionMap.find( *r.value );
-
-		if ( find != m_stringToActionMap.end() ) {
-			QAction* candidate = find->second;
-
-			if ( candidate->isEnabled() ) {
-				results.append( candidate );
-			}
-		}
-	}
-
 	// Delete dynamically generated from last search
 	for ( QAction* a : m_temporalActions ) {
 		delete a;
@@ -82,6 +71,18 @@ void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
 	}
 
 	results.append( m_temporalActions );
+
+	for ( auto& r : resultsStaticActions ) {
+		auto find = m_stringToActionMap.find( *r.value );
+
+		if ( find != m_stringToActionMap.end() ) {
+			QAction* candidate = find->second;
+
+			if ( candidate->isEnabled() ) {
+				results.append( candidate );
+			}
+		}
+	}
 
 
 
