@@ -6,6 +6,8 @@
 #include <QStandardItemModel>
 #include <QKeyEvent>
 #include <QTreeView>
+#include <QHeaderView>
+
 
 SimpleCommandPaletteWidget::SimpleCommandPaletteWidget( QWidget* parent ) :
 	AbstractCommandPaletteWidget( new SimpleCommandPaletteEngine(), parent ),
