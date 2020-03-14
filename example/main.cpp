@@ -1,21 +1,21 @@
 #include <QApplication>
 #include <QCommandLineParser>
-#include "MainWindow.hpp"
 
+#include "MainWindow.hpp"
 
 int main(int argc, char** argv)
 {
-	QApplication app(argc, argv);
-	
-	QCommandLineParser parser;
-	parser.setApplicationDescription( QCoreApplication::applicationName() );
-	parser.addHelpOption();
-	parser.addVersionOption();
-// 	parser.addPositionalArgument( "file", QApplication::translate( "main.cpp", "Video file to open" ) );
-	parser.process( app );
+    QApplication app(argc, argv);
 
-	MainWindow form;
-	form.show();
-	
-	return app.exec();
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QCoreApplication::applicationName());
+    parser.addHelpOption();
+    parser.addVersionOption();
+    // 	parser.addPositionalArgument( "file", QApplication::translate( "main.cpp", "Video file to open" ) );
+    parser.process(app);
+
+    MainWindow form;
+    form.show();
+
+    return app.exec();
 }

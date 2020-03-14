@@ -1,171 +1,179 @@
 #include "SimpleCommandPaletteWidget.hpp"
-#include "ui_SimpleCommandPaletteWidget.h"
+
+#include <QDebug>
+#include <QHeaderView>
+#include <QKeyEvent>
+#include <QStandardItemModel>
+#include <QTreeView>
 
 #include "SimpleCommandPaletteEngine.hpp"
-#include <QDebug>
-#include <QStandardItemModel>
-#include <QKeyEvent>
-#include <QTreeView>
-#include <QHeaderView>
+#include "ui_SimpleCommandPaletteWidget.h"
 
-
-SimpleCommandPaletteWidget::SimpleCommandPaletteWidget( QWidget* parent ) :
-	AbstractCommandPaletteWidget( new SimpleCommandPaletteEngine(), parent ),
-	ui( new Ui::SimpleCommandPaletteWidget )
+SimpleCommandPaletteWidget::SimpleCommandPaletteWidget(QWidget* parent)
+    : AbstractCommandPaletteWidget(new SimpleCommandPaletteEngine(), parent), ui(new Ui::SimpleCommandPaletteWidget)
 {
-	ui->setupUi( this );
+    ui->setupUi(this);
 
-	setPlaceholderText( tr( "Press <Ctrl+P> to search for possible commands" ) );
-	m_listView = new QTreeView( this );
+    setPlaceholderText(tr("Press <Ctrl+P> to search for possible commands"));
+    m_listView = new QTreeView(this);
 
-	m_listView->setSelectionBehavior( QAbstractItemView::SelectItems );
-	// 	m_listView->setWindowFlags( Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint );
-	m_listView->setWindowFlags( Qt::ToolTip );
-	m_listView->setSelectionBehavior( QAbstractItemView::SelectRows );
-	// 	m_listView->verticalHeader()->setVisible(false);
-	// 	m_listView->horizontalHeader()->setVisible(false);
-	// 	m_listView->setShowGrid(false);
-	m_listView->header()->close();
-	m_listView->setRootIsDecorated( false );
-	m_listView->hide();
-	m_listView->setEditTriggers( QTreeView::NoEditTriggers );
+    m_listView->setSelectionBehavior(QAbstractItemView::SelectItems);
+    // 	m_listView->setWindowFlags( Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint );
+    m_listView->setWindowFlags(Qt::ToolTip);
+    m_listView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    // 	m_listView->verticalHeader()->setVisible(false);
+    // 	m_listView->horizontalHeader()->setVisible(false);
+    // 	m_listView->setShowGrid(false);
+    m_listView->header()->close();
+    m_listView->setRootIsDecorated(false);
+    m_listView->hide();
+    m_listView->setEditTriggers(QTreeView::NoEditTriggers);
 
-	connect( m_listView, &QTreeView::clicked, this, &SimpleCommandPaletteWidget::onListViewClicked );
-
+    connect(m_listView, &QTreeView::clicked, this, &SimpleCommandPaletteWidget::onListViewClicked);
 }
 
 SimpleCommandPaletteWidget::~SimpleCommandPaletteWidget()
 {
-	delete m_listView;
-	delete ui;
+    delete m_listView;
+    delete ui;
 }
 
-void SimpleCommandPaletteWidget::on_lineEdit_textChanged( QString text )
+void SimpleCommandPaletteWidget::on_lineEdit_textChanged(QString text)
 {
-	if ( text.length() >= 2 ) {
-		m_engine->onSearchRequest( text );
-	} else {
-		m_listView->setModel( nullptr );
-		m_listView->hide();
-	}
+    if (text.length() >= 2)
+    {
+        m_engine->onSearchRequest(text);
+    }
+    else
+    {
+        m_listView->setModel(nullptr);
+        m_listView->hide();
+    }
 }
 
-void SimpleCommandPaletteWidget::onSearchResultsReady( QList<QAction*> results )
+void SimpleCommandPaletteWidget::onSearchResultsReady(QList< QAction* > results)
 {
-	QStandardItemModel* model = new QStandardItemModel();
-	m_listView->setModel( model );
+    QStandardItemModel* model = new QStandardItemModel();
+    m_listView->setModel(model);
 
-	for ( QAction* a : results ) {
-		QString commandText;
+    for (QAction* a : results)
+    {
+        QString commandText;
 
-		if ( a->isCheckable() && !a->actionGroup() ) {
-			commandText = ( a->isChecked() ? tr( "Deactivate \"" ) : tr( "Activate \"" ) ) +  a->text().replace( "&", "" ) + "\"";
-		} else if ( a->isCheckable() && a->actionGroup() ) {
-			commandText = tr( "Select: " ) + a->text().replace( "&", "" );
-		} else {
-			commandText = a->text().replace( "&", "" );
-		}
+        if (a->isCheckable() && !a->actionGroup())
+        {
+            commandText =
+                (a->isChecked() ? tr("Deactivate \"") : tr("Activate \"")) + a->text().replace("&", "") + "\"";
+        }
+        else if (a->isCheckable() && a->actionGroup())
+        {
+            commandText = tr("Select: ") + a->text().replace("&", "");
+        }
+        else
+        {
+            commandText = a->text().replace("&", "");
+        }
 
-		QList<QStandardItem*> itemRow;
-		auto item = new QStandardItem( a->icon(), commandText );
-		item->setData( qVariantFromValue( ( void* ) a ) );
-		itemRow.append( item );
+        QList< QStandardItem* > itemRow;
+        auto item = new QStandardItem(a->icon(), commandText);
+        item->setData(qVariantFromValue((void*) a));
+        itemRow.append(item);
 
-		if ( !a->shortcut().isEmpty() ) {
-			QStandardItem* shortcutItem = new QStandardItem( "(" + a->shortcut().toString() + ")" );
-			shortcutItem->setForeground( Qt::gray );
-			shortcutItem->setTextAlignment( Qt::AlignRight | Qt::AlignVCenter );
-			itemRow.append( shortcutItem );
-		}
+        if (!a->shortcut().isEmpty())
+        {
+            QStandardItem* shortcutItem = new QStandardItem("(" + a->shortcut().toString() + ")");
+            shortcutItem->setForeground(Qt::gray);
+            shortcutItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+            itemRow.append(shortcutItem);
+        }
 
-		model->appendRow( itemRow );
-	}
+        model->appendRow(itemRow);
+    }
 
-	if ( !results.empty() ) {
-		m_listView->setCurrentIndex( model->index( 0, 0 ) );
-		showPopup();
-	} else {
-		m_listView->hide();
-	}
-
-
+    if (!results.empty())
+    {
+        m_listView->setCurrentIndex(model->index(0, 0));
+        showPopup();
+    }
+    else
+    {
+        m_listView->hide();
+    }
 }
 
-void SimpleCommandPaletteWidget::keyReleaseEvent( QKeyEvent* event )
+void SimpleCommandPaletteWidget::keyReleaseEvent(QKeyEvent* event)
 {
-	QWidget::keyPressEvent( event );
+    QWidget::keyPressEvent(event);
 
-	if ( event->key() == Qt::Key_Escape ) {
-		emit userInteractionFinished();
-		ui->lineEdit->clear();
-	}
+    if (event->key() == Qt::Key_Escape)
+    {
+        emit userInteractionFinished();
+        ui->lineEdit->clear();
+    }
 
-	QStandardItemModel* model = reinterpret_cast<QStandardItemModel*>( m_listView->model() );
+    QStandardItemModel* model = reinterpret_cast< QStandardItemModel* >(m_listView->model());
 
-	if ( model && m_listView->selectionModel() ) {
-		auto selectedIndexes = m_listView->selectionModel()->selectedIndexes();
-		QModelIndex* selectedIndex = nullptr;
-		QStandardItem* selectedItem = nullptr;
-		QAction* selectedCommand = nullptr;
+    if (model && m_listView->selectionModel())
+    {
+        auto selectedIndexes        = m_listView->selectionModel()->selectedIndexes();
+        QModelIndex* selectedIndex  = nullptr;
+        QStandardItem* selectedItem = nullptr;
+        QAction* selectedCommand    = nullptr;
 
+        if (selectedIndexes.length() > 0)
+        {
+            selectedIndex   = &selectedIndexes[0];
+            selectedItem    = model->itemFromIndex(selectedIndexes[0]);
+            selectedCommand = (QAction*) selectedItem->data().value< void* >();
+        }
 
-		if ( selectedIndexes.length() > 0 ) {
-			selectedIndex = &selectedIndexes[0];
-			selectedItem =  model->itemFromIndex( selectedIndexes[0] );
-			selectedCommand = ( QAction* ) selectedItem->data().value<void*>();
-		}
+        if ((event->key() == Qt::Key_Enter) || (event->key() == Qt::Key_Return))
+        {
+            if (selectedCommand)
+            {
+                emit userInteractionFinished();
+                ui->lineEdit->clear();
+                selectedCommand->trigger();
+            }
+        }
+        else if (event->key() == Qt::Key_Down)
+        {
+            if (selectedIndex)
+            {
+                int numRows = model->rowCount();
+                int curRow  = selectedIndex->row();
 
+                if (curRow + 1 < numRows)
+                {
+                    m_listView->setCurrentIndex(model->index(curRow + 1, 0));
+                }
+            }
+        }
+        else if (event->key() == Qt::Key_Up)
+        {
+            if (selectedIndex)
+            {
+                int curRow = selectedIndex->row();
 
-		if ( ( event->key() ==  Qt::Key_Enter ) || ( event->key() == Qt::Key_Return ) ) {
-
-			if ( selectedCommand ) {
-				emit userInteractionFinished();
-				ui->lineEdit->clear();
-				selectedCommand->trigger();
-			}
-
-		} else if ( event->key() == Qt::Key_Down ) {
-
-			if ( selectedIndex ) {
-				int numRows = model->rowCount();
-				int curRow = selectedIndex->row();
-
-				if ( curRow + 1 < numRows ) {
-					m_listView->setCurrentIndex( model->index( curRow + 1, 0 ) );
-				}
-			}
-		} else if ( event->key() == Qt::Key_Up ) {
-
-			if ( selectedIndex ) {
-				int curRow = selectedIndex->row();
-
-				if ( curRow - 1 >= 0 ) {
-					m_listView->setCurrentIndex( model->index( curRow - 1, 0 ) );
-				}
-			}
-		}
-	}
+                if (curRow - 1 >= 0)
+                {
+                    m_listView->setCurrentIndex(model->index(curRow - 1, 0));
+                }
+            }
+        }
+    }
 }
 
-
-void SimpleCommandPaletteWidget::onShortcutPressed()
-{
-	ui->lineEdit->setFocus();
-}
-
+void SimpleCommandPaletteWidget::onShortcutPressed() { ui->lineEdit->setFocus(); }
 
 void SimpleCommandPaletteWidget::showPopup()
 {
-	m_listView->show();
-	QPoint localPos( ui->lineEdit->pos().x(),
-					 ui->lineEdit->pos().y() + ui->lineEdit->height() );
-	QPoint globalPos = this->mapToGlobal( localPos );
-	m_listView->setGeometry( QRect( globalPos.x(),
-									globalPos.y(),
-									std::max( ui->lineEdit->width(), m_minPopUpWidth ),
-									200 ) );
-	m_listView->setColumnWidth( 0, std::max( ui->lineEdit->width(), m_minPopUpWidth ) * 0.7 );
-	m_listView->setColumnWidth( 1, std::max( ui->lineEdit->width(), m_minPopUpWidth ) * 0.2 );
+    m_listView->show();
+    QPoint localPos(ui->lineEdit->pos().x(), ui->lineEdit->pos().y() + ui->lineEdit->height());
+    QPoint globalPos = this->mapToGlobal(localPos);
+    m_listView->setGeometry(QRect(globalPos.x(), globalPos.y(), std::max(ui->lineEdit->width(), m_minPopUpWidth), 200));
+    m_listView->setColumnWidth(0, std::max(ui->lineEdit->width(), m_minPopUpWidth) * 0.7);
+    m_listView->setColumnWidth(1, std::max(ui->lineEdit->width(), m_minPopUpWidth) * 0.2);
 }
 
 // void SimpleCommandPaletteWidget::onNextSuggestionRequested()
@@ -184,41 +192,34 @@ void SimpleCommandPaletteWidget::showPopup()
 // 	delete event;
 // }
 
-
-void SimpleCommandPaletteWidget::onListViewClicked( const QModelIndex& index )
+void SimpleCommandPaletteWidget::onListViewClicked(const QModelIndex& index)
 {
-	QStandardItemModel* model = reinterpret_cast<QStandardItemModel*>( m_listView->model() );
+    QStandardItemModel* model = reinterpret_cast< QStandardItemModel* >(m_listView->model());
 
-	if ( model ) {
-		QStandardItem* item = model->itemFromIndex( index );
-		QAction* action = reinterpret_cast<QAction*>( item->data().value<void*>() );
+    if (model)
+    {
+        QStandardItem* item = model->itemFromIndex(index);
+        QAction* action     = reinterpret_cast< QAction* >(item->data().value< void* >());
 
-		if ( action ) {
-			emit userInteractionFinished();
-			m_listView->hide();
-			ui->lineEdit->blockSignals( true );
-			ui->lineEdit->clear();
-			ui->lineEdit->blockSignals( false );
-			action->trigger();
-		}
-	}
-
+        if (action)
+        {
+            emit userInteractionFinished();
+            m_listView->hide();
+            ui->lineEdit->blockSignals(true);
+            ui->lineEdit->clear();
+            ui->lineEdit->blockSignals(false);
+            action->trigger();
+        }
+    }
 }
 
-void SimpleCommandPaletteWidget::setPlaceholderText( QString text )
-{
-	ui->lineEdit->setPlaceholderText( text );
-}
+void SimpleCommandPaletteWidget::setPlaceholderText(QString text) { ui->lineEdit->setPlaceholderText(text); }
 
-QString SimpleCommandPaletteWidget::placeholderText()
-{
-	return ui->lineEdit->placeholderText();
-}
+QString SimpleCommandPaletteWidget::placeholderText() { return ui->lineEdit->placeholderText(); }
 
-void SimpleCommandPaletteWidget::focusInEvent( QFocusEvent* event )
+void SimpleCommandPaletteWidget::focusInEvent(QFocusEvent* event)
 {
-	QWidget::focusInEvent( event );
-	event->accept();
-	ui->lineEdit->setFocus();
+    QWidget::focusInEvent(event);
+    event->accept();
+    ui->lineEdit->setFocus();
 }
-

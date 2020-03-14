@@ -3,88 +3,87 @@
 #include <QAction>
 #include <QDebug>
 #include <QMenu>
-
 #include <iostream>
 
-void FuzzyCommandPaletteEngine::addAction( QAction* action )
+void FuzzyCommandPaletteEngine::addAction(QAction* action)
 {
-	AbstractCommandPaletteEngine::addAction( action );
-	m_matcherOptions.case_sensitive = false;
-	m_matcherOptions.num_threads = 3;
-	m_matcherOptions.max_results = 10;
-	m_matcherOptions.max_gap = 0;
-	QString searchString = action->text().toLower();
-	QMenu* parentMenu = dynamic_cast<QMenu*>( action->parent() );
+    AbstractCommandPaletteEngine::addAction(action);
+    m_matcherOptions.case_sensitive = false;
+    m_matcherOptions.num_threads    = 3;
+    m_matcherOptions.max_results    = 10;
+    m_matcherOptions.max_gap        = 0;
+    QString searchString            = action->text().toLower();
+    QMenu* parentMenu               = dynamic_cast< QMenu* >(action->parent());
 
-	if ( parentMenu ) {
-		searchString = parentMenu->title().toLower().replace( "&", "" ) + " " + searchString;
-	}
+    if (parentMenu)
+    {
+        searchString = parentMenu->title().toLower().replace("&", "") + " " + searchString;
+    }
 
-	searchString += " " + action->shortcut().toString() + " " + action->toolTip();
+    searchString += " " + action->shortcut().toString() + " " + action->toolTip();
 
-	m_matcherBase.addCandidate( searchString.toStdString() );
-	m_stringToActionMap[ searchString.toStdString()] = action ;
+    m_matcherBase.addCandidate(searchString.toStdString());
+    m_stringToActionMap[searchString.toStdString()] = action;
 }
-void FuzzyCommandPaletteEngine::addActions( QList<QAction*>& actions )
+void FuzzyCommandPaletteEngine::addActions(QList< QAction* >& actions)
 {
-	AbstractCommandPaletteEngine::addActions( actions );
+    AbstractCommandPaletteEngine::addActions(actions);
 
+    for (auto action : actions)
+    {
+        QString searchString = action->text().toLower();
+        QMenu* parentMenu    = dynamic_cast< QMenu* >(action->parent());
 
-	for ( auto action : actions ) {
+        if (parentMenu)
+        {
+            searchString += parentMenu->title().toLower().replace("&", "");
+        }
 
-		QString searchString = action->text().toLower();
-		QMenu* parentMenu = dynamic_cast<QMenu*>( action->parent() );
-
-		if ( parentMenu ) {
-			searchString += parentMenu->title().toLower().replace( "&", "" );
-		}
-
-		m_matcherBase.addCandidate( searchString.toStdString() );
-		m_stringToActionMap[ searchString.toStdString()] = action ;
-	}
-
-
-
+        m_matcherBase.addCandidate(searchString.toStdString());
+        m_stringToActionMap[searchString.toStdString()] = action;
+    }
 }
 void FuzzyCommandPaletteEngine::clearActions()
 {
-	m_matcherBase.clear();
-	m_stringToActionMap.clear();
+    m_matcherBase.clear();
+    m_stringToActionMap.clear();
 }
 
-void FuzzyCommandPaletteEngine::onSearchRequest( const QString& searchQuery )
+void FuzzyCommandPaletteEngine::onSearchRequest(const QString& searchQuery)
 {
+    QList< QAction* > results;
+    std::vector< MatchResult > resultsStaticActions =
+        m_matcherBase.findMatches(searchQuery.toStdString(), m_matcherOptions);
 
-	QList<QAction*> results;
-	std::vector<MatchResult> resultsStaticActions =  m_matcherBase.findMatches( searchQuery.toStdString(), m_matcherOptions );
+    // Delete dynamically generated from last search
+    for (QAction* a : m_temporalActions)
+    {
+        delete a;
+    }
 
-	// Delete dynamically generated from last search
-	for ( QAction* a : m_temporalActions ) {
-		delete a;
-	}
+    m_temporalActions.clear();
 
-	m_temporalActions.clear();
+    for (auto f : m_dynamicActions)
+    {
+        m_temporalActions.append(f(searchQuery));
+    }
 
+    results.append(m_temporalActions);
 
-	for ( auto f : m_dynamicActions ) {
-		m_temporalActions.append( f( searchQuery ) );
-	}
+    for (auto& r : resultsStaticActions)
+    {
+        auto find = m_stringToActionMap.find(*r.value);
 
-	results.append( m_temporalActions );
+        if (find != m_stringToActionMap.end())
+        {
+            QAction* candidate = find->second;
 
-	for ( auto& r : resultsStaticActions ) {
-		auto find = m_stringToActionMap.find( *r.value );
+            if (candidate->isEnabled())
+            {
+                results.append(candidate);
+            }
+        }
+    }
 
-		if ( find != m_stringToActionMap.end() ) {
-			QAction* candidate = find->second;
-
-			if ( candidate->isEnabled() ) {
-				results.append( candidate );
-			}
-		}
-	}
-
-
-
-	emit actionsFound( results );
+    emit actionsFound(results);
 }

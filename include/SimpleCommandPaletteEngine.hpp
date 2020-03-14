@@ -11,20 +11,17 @@
 
 #include "AbstractCommandPaletteEngine.hpp"
 
-class SimpleCommandPaletteEngine: public AbstractCommandPaletteEngine
+class SimpleCommandPaletteEngine : public AbstractCommandPaletteEngine
 {
-	Q_OBJECT
-public:
-	SimpleCommandPaletteEngine();
-	virtual ~SimpleCommandPaletteEngine();
-	
-	
+    Q_OBJECT
+  public:
+    SimpleCommandPaletteEngine();
+    virtual ~SimpleCommandPaletteEngine();
 
-public slots:
-	virtual void onSearchRequest( const QString& searchQuery ) override;
+  public slots:
+    virtual void onSearchRequest(const QString& searchQuery) override;
 
-private:
-
+  private:
 };
 
 #endif // SIMPLECOMANDPALETTEENGINE_HPP
